@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email         = '741136856@qq.com'
 
   spec.summary       = 'Notify some worker App\'s status'
-  # spec.homepage      = "https://github.com/<GITHUB_USERNAME>/fastlane-plugin-notifyworker"
+  spec.homepage      = "https://github.com/zlfyuan/fastlane-plugin-notifyworker"
   spec.license       = "MIT"
 
   spec.files         = Dir["lib/**/*"] + %w(README.md LICENSE)
