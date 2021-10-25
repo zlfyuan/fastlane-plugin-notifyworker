@@ -8,14 +8,12 @@ module Fastlane
       class NotifyworkerAction < Action
          def self.run(params)
             UI.message("The notifyworker plugin is working!")
-
             webhook = params[:webhook]
             api_key = params[:api_key]
             app_key = params[:app_key]
             updateDes = params[:updateDes]
             platform = params[:platform]
             atAll = params[:atAll]
-
             if platform.nil?
                platform = "DingTalk"
             end
@@ -55,28 +53,29 @@ module Fastlane
             if body["code"] != 0
                UI.user_error!("Notifyworker Plugin Error: #{body["message"]}")
             end
-
+         
             UI.message "Get app info success ..."
             appInfo = body["data"]
-            sizeStr = appInfo['buildFileSize']
-            _size = (sizeStr.to_i) / 1024 / 1024
-            version = "版本：#{appInfo['buildVersion']} (build #{appInfo['buildBuildVersion']})"
-            size = "大小：#{_size} MB"
+            app_name = "应用名称：#{appInfo["buildName"]}"
+            size_str = appInfo['buildFileSize']
+            _size = (size_str.to_i) / 1024 / 1024
+            app_type = "应用类型：#{appInfo["buildType"] == "1" ? "iOS" : "Android"}"
+            version = "版本信息：#{appInfo['buildVersion']} (Build #{appInfo['buildBuildVersion']})"
+            size = "应用大小：#{_size} MB"
             update_time = "更新时间 ：#{appInfo['buildUpdated']}"
             open_url_path = "https://www.pgyer.com/#{appInfo['buildShortcutUrl']}"
             download_url_path = open_url_path
-            picUrl = appInfo['buildQRCodeURL']
+            pic_url = appInfo['buildQRCodeURL']
             title = "请点击我测试\n#{appInfo["buildName"]}"
 
-            _updateDes = "此次更新内容：#{updateDes}"
-
+            _updateDes = "更新内容：#{updateDes}"
             if platform == "DingTalk"
 
                _news = {
                   "msgtype" => "markdown",
                   "markdown" => {
                      "title" => "安装测试版",
-                     "text" => "# #{appInfo["buildName"]} \n ### #{version} \n ### #{size} \n ### #{update_time} \n ### #{_updateDes} \n > ![screenshot](#{picUrl}) \n\n > [直接下载](#{download_url_path}) \n"
+                     "text" => "###### 应用更新提醒 \n ###### 您的应用上传了新版本 \n ##### #{app_name}\n ##### #{app_type}\n##### #{version}\n##### #{size}\n##### #{update_time}\n##### #{_updateDes}\n > ![screenshot](#{pic_url}) \n\n > [查看](#{download_url_path}) \n"
                   },
                   "at": {
                      "atMobiles" => [
