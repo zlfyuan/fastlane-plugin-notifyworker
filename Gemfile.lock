@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    fastlane-plugin-notifyworker (0.1.2)
+    fastlane-plugin-notifyworker (0.1.4)
 
 GEM
   remote: https://rubygems.org/
